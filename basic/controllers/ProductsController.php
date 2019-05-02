@@ -67,8 +67,10 @@ class ProductsController extends Controller
     public function actionCreate()
     {
         $model = new Products();
-        $arTextile = Textile::find()->asArray()->all();
-		$arFurniture = Furniture::find()->asArray()->all();
+        $arTextile = Textile::find()
+			->orderBy(['color' => 'asc'])
+			->asArray()->all();
+		$arFurniture = Furniture::find()->orderBy(['color' => 'asc'])->asArray()->all();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
