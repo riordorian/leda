@@ -15,7 +15,8 @@ use yii\bootstrap\ActiveForm;
 		'layout' => 'horizontal',
 		'fieldConfig' => [
 			'horizontalCssClasses' => [
-				'wrapper' => 'col-md-2',
+				'wrapper' => 'col-md-6',
+				'offset' => '',
 				'label' => 'col-md-6',
 			],
 		],
@@ -36,12 +37,22 @@ use yii\bootstrap\ActiveForm;
 			],
 			[
 				'label' => 'Ткани',
-				'content' => $this->render('_textile_form.php', ['model' => $model, 'form' => $form, 'arTextile' => $arTextile]),
+				'content' => $this->render('_textile_form.php', [
+						'model' => $model,
+						'modelTextile' => $modelTextile,
+						'form' => $form,
+						'arTextile' => $arTextile
+				]),
 				'options' => ['id' => 'textile'],
 			],
 			[
 				'label' => 'Фурнитура',
-				'content' => $this->render('_furniture_form.php', ['model' => $model, 'form' => $form, 'arFurniture' => $arFurniture]),
+				'content' => $this->render('_furniture_form.php', [
+						'model' => $model,
+						'modelFurniture' => $modelFurniture,
+						'form' => $form,
+						'arFurniture' => $arFurniture
+				]),
 			],
         ],
 	]);?>

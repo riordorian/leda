@@ -30,6 +30,14 @@ class Textile extends \yii\db\ActiveRecord
         return 'textile';
     }
 
+	/**
+	 * @return string
+	 */
+	public static function entityLabel()
+	{
+		return 'Ткань';
+	}
+
     /**
      * {@inheritdoc}
      */

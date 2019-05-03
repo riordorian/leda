@@ -29,10 +29,13 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
             'name',
             'xml_id',
-            'composition:ntext',
+			[
+				'label'  => $model->getAttributeLabel('composition'),
+				'value'  => $this->render('_view_composition.php', ['model' => $model, 'productComposition' => $productComposition]),
+				'format' => 'html'
+			],
         ],
     ]) ?>
 

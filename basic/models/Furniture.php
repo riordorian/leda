@@ -33,6 +33,15 @@ class Furniture extends \yii\db\ActiveRecord
         return 'furniture';
     }
 
+
+	/**
+	 * @return string
+	 */
+    public static function entityLabel()
+    {
+        return 'Фурнитура';
+    }
+
     /**
      * {@inheritdoc}
      */

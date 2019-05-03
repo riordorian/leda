@@ -1,5 +1,6 @@
 <?php
 
+use app\models\Products;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
@@ -27,10 +28,16 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+//            'id',
             'name',
-            'xml_id',
-            'composition:ntext',
+//            'xml_id',
+			[
+				'label'  => (new $dataProvider->query->modelClass())->getAttributeLabel('composition'),
+				'value'  => function ($model){
+					return $this->render('_view_composition.php', ['model' => $model, 'productComposition' => Products::getCompositionInfo($model->getAttribute('composition'))]);
+				},
+				'format' => 'html'
+			],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

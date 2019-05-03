@@ -54,8 +54,10 @@ class ProductsController extends Controller
      */
     public function actionView($id)
     {
+    	$model = $this->findModel($id);
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+            'productComposition' => Products::getCompositionInfo($model->composition),
         ]);
     }
 
@@ -67,6 +69,9 @@ class ProductsController extends Controller
     public function actionCreate()
     {
         $model = new Products();
+        $modelFurniture = Furniture::class;
+        $modelTextile = Textile::class;
+
         $arTextile = Textile::find()
 			->orderBy(['color' => 'asc'])
 			->asArray()->all();
@@ -78,6 +83,8 @@ class ProductsController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'modelFurniture' => $modelFurniture,
+            'modelTextile' => $modelTextile,
             'arTextile' => $arTextile,
             'arFurniture' => $arFurniture,
         ]);
@@ -93,13 +100,26 @@ class ProductsController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+		$modelFurniture = Furniture::class;
+		$modelTextile = Textile::class;
+
+		$arTextile = Textile::find()
+			->orderBy(['color' => 'asc'])
+			->asArray()->all();
+		$arFurniture = Furniture::find()->orderBy(['color' => 'asc'])->asArray()->all();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
+        $model->composition = is_array(json_decode($model->composition, 1)) && !empty($model->composition) ? json_decode($model->composition, 1) : [];
+
         return $this->render('update', [
             'model' => $model,
+			'modelFurniture' => $modelFurniture,
+			'modelTextile' => $modelTextile,
+			'arTextile' => $arTextile,
+			'arFurniture' => $arFurniture,
         ]);
     }
 
