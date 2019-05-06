@@ -10,6 +10,7 @@ use app\models\ProductsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * ProductsController implements the CRUD actions for Products model.
@@ -57,7 +58,7 @@ class ProductsController extends Controller
     	$model = $this->findModel($id);
         return $this->render('view', [
             'model' => $model,
-            'productComposition' => Products::getCompositionInfo($model->composition),
+            'productComposition' => Products::getCompositionInfo($model->composition, $model->manufacturing),
         ]);
     }
 
@@ -77,7 +78,16 @@ class ProductsController extends Controller
 			->asArray()->all();
 		$arFurniture = Furniture::find()->orderBy(['color' => 'asc'])->asArray()->all();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) ) {
+			$model->imageInfo = UploadedFile::getInstance($model, 'image');
+			if ($model->imageInfo && $model->validate()) {
+				$filePath = 'uploads/products/' . $model->imageInfo->baseName . '.' . $model->imageInfo->extension;
+				$model->imageInfo->saveAs($filePath);
+				$model->image = '/' . $filePath;
+			}
+
+			$model->save();
+
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -108,7 +118,16 @@ class ProductsController extends Controller
 			->asArray()->all();
 		$arFurniture = Furniture::find()->orderBy(['color' => 'asc'])->asArray()->all();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+			$model->imageInfo = UploadedFile::getInstance($model, 'image');
+			if ($model->imageInfo && $model->validate()) {
+				$filePath = 'uploads/products/' . $model->imageInfo->baseName . '.' . $model->imageInfo->extension;
+				$model->imageInfo->saveAs($filePath);
+				$model->image = '/' . $filePath;
+			}
+
+			$model->save();
+
             return $this->redirect(['view', 'id' => $model->id]);
         }
 

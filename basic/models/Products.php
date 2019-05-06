@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "products".
@@ -11,9 +12,13 @@ use Yii;
  * @property string $name Название
  * @property string $xml_id Артикул
  * @property string $composition Состав
+ * @property string manufacturing Пошив
+ * @property string image Изображение
  */
-class Products extends \yii\db\ActiveRecord
+class Products extends ActiveRecord
 {
+	public $imageInfo = [];
+
     /**
      * {@inheritdoc}
      */
@@ -29,7 +34,9 @@ class Products extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'xml_id'], 'required'],
-            [['composition'], 'string'],
+			[['composition', 'image'], 'string'],
+			[['imageInfo'], 'file'],
+			[['manufacturing'], 'number'],
             [['name', 'xml_id'], 'string', 'max' => 150],
         ];
     }
@@ -44,7 +51,9 @@ class Products extends \yii\db\ActiveRecord
             'name' => Yii::t('app', 'Название'),
             'xml_id' => Yii::t('app', 'Артикул'),
             'composition' => Yii::t('app', 'Состав'),
-        ];
+			'manufacturing' => Yii::t('app', 'Пошив'),
+			'image' => Yii::t('app', 'Изображение'),
+		];
     }
 
     public function beforeValidate()
@@ -62,7 +71,7 @@ class Products extends \yii\db\ActiveRecord
 	 *
 	 * @return array
 	 */
-	public static function getCompositionInfo(string $composition)
+	public static function getCompositionInfo(string $composition, $manufacturing = 0)
 	{
 		$arResult = ['composition' => [], 'price' => [
 			'base' => 0,
@@ -114,16 +123,16 @@ class Products extends \yii\db\ActiveRecord
 				$arResult['composition'][$entityLabel][$ingredientName] = (is_array($ingredients) ? implode('x', $ingredients) : $ingredients) . ' ' . $arIngredientInfo['unit'];
 
 				# Price building
-				$ingredientPartK = is_array($ingredients) ? (($ingredients['width'] * $ingredients['height']) / $arIngredientInfo['width'] * $arIngredientInfo['height']) : 0;
+				$ingredientPartK = is_array($ingredients) ? (($ingredients['width'] * $ingredients['height']) / ($arIngredientInfo['width'] * $arIngredientInfo['height'])) : 0;
 				$ingredientPrice = (is_array($ingredients) ? $ingredientPartK : $ingredients) * $arIngredientInfo['total_price'];
 				$arResult['price']['base'] += $ingredientPrice;
 				$arResult['composition'][$entityLabel][$ingredientName] .= ' (' . $ingredientPrice . ' руб.)';
 			}
 		}
 
-
+		$arResult['price']['base'] += 25 + $manufacturing;
 		$arResult['price']['base'] = round($arResult['price']['base']);
-		$arResult['price']['fullBase'] = round($arResult['price']['base'] * 1.06 + 300);
+		$arResult['price']['fullBase'] = round($arResult['price']['base'] * 1.06 + 150);
 		$arResult['price']['wholeSale'] = round($arResult['price']['fullBase'] * 2.8);
 		$arResult['price']['retail'] = round($arResult['price']['wholeSale'] * 2);
 

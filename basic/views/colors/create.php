@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Colors */
 
-$this->title = Yii::t('app', 'Create Colors');
+$this->title = Yii::t('app', 'Добавить Colors');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Colors'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

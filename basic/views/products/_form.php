@@ -20,6 +20,7 @@ use yii\bootstrap\ActiveForm;
 				'label' => 'col-md-6',
 			],
 		],
+		'options' => ['enctype' => 'multipart/form-data']
 	]); ?>
 
 	<?php
@@ -59,7 +60,7 @@ use yii\bootstrap\ActiveForm;
 
 
     <div class="form-group">
-        <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton(Yii::t('app', 'Сохранить'), ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

@@ -8,7 +8,7 @@ use yii\widgets\Pjax;
 /* @var $searchModel app\models\ProductsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Products');
+$this->title = Yii::t('app', 'Модели');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="products-index">
@@ -16,25 +16,32 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Products'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Добавить модель'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php Pjax::begin(); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+//        'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-//            'id',
             'name',
-//            'xml_id',
+            'manufacturing',
+			[
+				'attribute' => 'image',
+				'format' => ['image',['width'=>'200']],
+				'value' => function($dataProvider) { return $dataProvider->image; },
+			],
 			[
 				'label'  => (new $dataProvider->query->modelClass())->getAttributeLabel('composition'),
 				'value'  => function ($model){
-					return $this->render('_view_composition.php', ['model' => $model, 'productComposition' => Products::getCompositionInfo($model->getAttribute('composition'))]);
+					return $this->render('_view_composition.php', [
+							'model' => $model,
+							'productComposition' => Products::getCompositionInfo($model->getAttribute('composition'), $model->manufacturing)
+					]);
 				},
 				'format' => 'html'
 			],

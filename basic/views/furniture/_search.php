@@ -1,5 +1,7 @@
 <?php
 
+use app\models\Colors;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -24,7 +26,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name') ?>
 
-    <?= $form->field($model, 'color') ?>
+	<?= $form->field($model, 'color')->dropDownList(ArrayHelper::map(Colors::find()->all(), 'name', 'name')) ?>
 
 <!--    --><?//= $form->field($model, 'width') ?>
 
@@ -43,8 +45,8 @@ use yii\widgets\ActiveForm;
     <?php // echo $form->field($model, 'amount') ?>
 
     <div class="form-group">
-        <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-outline-secondary']) ?>
+        <?= Html::submitButton(Yii::t('app', 'Найти'), ['class' => 'btn btn-primary']) ?>
+        <?= Html::resetButton(Yii::t('app', 'Сбросить'), ['class' => 'btn btn-outline-secondary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
