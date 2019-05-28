@@ -44,6 +44,7 @@ AppAsset::register($this);
             ['label' => 'Ткани', 'url' => ['/textile']],
             ['label' => 'Фурнитура', 'url' => ['/furniture']],
             ['label' => 'Модели', 'url' => ['/products']],
+            ['label' => 'Детализация на изделия', 'url' => ['/products/composition']],
             /*Yii::$app->user->isGuest ? (
                 ['label' => 'Login', 'url' => ['/site/login']]
             ) : (

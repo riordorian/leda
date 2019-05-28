@@ -62,6 +62,22 @@ class ProductsController extends Controller
         ]);
     }
 
+    public function actionComposition()
+    {
+		$searchModel = new ProductsSearch();
+		$arData = $searchModel->search(Yii::$app->request->queryParams)->getModels();
+
+		foreach ($arData as &$obItem) {
+			$obItem->composition = Products::getCompositionInfo($obItem->composition, 0, true)['composition'];
+		}
+		unset($obItem);
+
+		return $this->render('composition', [
+			'searchModel' => $searchModel,
+			'arData' => $arData,
+		]);
+    }
+
     /**
      * Creates a new Products model.
      * If creation is successful, the browser will be redirected to the 'view' page.

@@ -71,7 +71,7 @@ class Products extends ActiveRecord
 	 *
 	 * @return array
 	 */
-	public static function getCompositionInfo(string $composition, $manufacturing = 0)
+	public static function getCompositionInfo(string $composition, $manufacturing = 0, $bSeparate = false)
 	{
 		$arResult = ['composition' => [], 'price' => [
 			'base' => 0,
@@ -120,13 +120,22 @@ class Products extends ActiveRecord
 
 				$arIngredientInfo = reset($arIngredientInfo);
 				$ingredientName = implode(' - ', [$arIngredientInfo['name'], $arIngredientInfo['color']]);
-				$arResult['composition'][$entityLabel][$ingredientName] = (is_array($ingredients) ? implode('x', $ingredients) : $ingredients) . ' ' . $arIngredientInfo['unit'];
+
 
 				# Price building
 				$ingredientPartK = is_array($ingredients) ? (($ingredients['width'] * $ingredients['height']) / ($arIngredientInfo['width'] * $arIngredientInfo['height'])) : 0;
 				$ingredientPrice = (is_array($ingredients) ? $ingredientPartK : $ingredients) * $arIngredientInfo['total_price'];
 				$arResult['price']['base'] += $ingredientPrice;
-				$arResult['composition'][$entityLabel][$ingredientName] .= ' (' . $ingredientPrice . ' руб.)';
+
+				if (!$bSeparate) {
+					$arResult['composition'][$entityLabel][$ingredientName] = (is_array($ingredients) ? implode('x', $ingredients) : $ingredients) . ' ' . $arIngredientInfo['unit'];
+					$arResult['composition'][$entityLabel][$ingredientName] .= ' (' . $ingredientPrice . ' руб.)';
+				}
+				else{
+					$arResult['composition'][$entityLabel][$ingredientName] = [];
+					$arResult['composition'][$entityLabel][$ingredientName]['price'] = $ingredientPrice;
+					$arResult['composition'][$entityLabel][$ingredientName]['amount'] = is_array($ingredients) ? $ingredients['width'] : $ingredients;
+				}
 			}
 		}
 
