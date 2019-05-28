@@ -19,11 +19,13 @@ $this->params['breadcrumbs'][] = $this->title;
 		<thead>
 			<tr>
 				<th>ID модели</th>
+				<th>Изображение</th>
 				<th>Название модели</th>
 				<th>Объем партии</th>
 				<th>Тип материала</th>
 				<th>Название материала</th>
-				<th>Количество материала</th>
+				<th>Количество материала (шт, ширина)</th>
+				<th>Количество материала (высота)</th>
 				<th>Цена на изделие</th>
 			</tr>
 		</thead>
@@ -31,19 +33,29 @@ $this->params['breadcrumbs'][] = $this->title;
 		<tbody>
 		<?
 			foreach ($arData as $obItem) {
+				$i = 0;
 
 				foreach ($obItem->composition as $compositionType => $arTypeInfo) {
+
+					$j = 0;
 					foreach ($arTypeInfo as $materialName => $arMaterialInfo) {
 						?><tr>
-							<td><?= $obItem->id ?></td>
-							<td><?= $obItem->name ?></td>
+							<td><?= $i == 0 ? $obItem->id : '' ?></td>
+							<td>
+								<img width="100" src="<?= $i == 0 ? $obItem->image : '' ?>" alt="">
+							</td>
+							<td><?= $i == 0 ? $obItem->name : '' ?></td>
 							<td> </td>
-							<td><?= $compositionType ?></td>
+							<td><?= $j == 0 ? $compositionType : '' ?></td>
 							<td><?= $materialName ?></td>
-							<td><?= $arMaterialInfo['amount'] ?></td>
-							<td><?= $arMaterialInfo['price'] ?></td>
+							<td><?= number_format(floatval($arMaterialInfo['amount']), 2, ',', '') ?></td>
+							<td><?= number_format(floatval($arMaterialInfo['height']), 2, ',', '') ?></td>
+							<td><?= number_format(floatval($arMaterialInfo['price']), 2, ',', '') ?></td>
 						</tr><?
+						$j++;
 					}
+
+					$i++;
 				}
 
 			}

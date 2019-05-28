@@ -65,7 +65,7 @@ class ProductsController extends Controller
     public function actionComposition()
     {
 		$searchModel = new ProductsSearch();
-		$arData = $searchModel->search(Yii::$app->request->queryParams)->getModels();
+		$arData = $searchModel->search(Yii::$app->request->queryParams)->query->all();
 
 		foreach ($arData as &$obItem) {
 			$obItem->composition = Products::getCompositionInfo($obItem->composition, 0, true)['composition'];

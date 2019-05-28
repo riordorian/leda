@@ -105,7 +105,7 @@ class Products extends ActiveRecord
 					return !empty($item);
 				}
 			});
-			
+
 			foreach ($arGroup as $itemId => $ingredients){
 				$entityLabel = $groupClass::entityLabel();
 
@@ -135,6 +135,7 @@ class Products extends ActiveRecord
 					$arResult['composition'][$entityLabel][$ingredientName] = [];
 					$arResult['composition'][$entityLabel][$ingredientName]['price'] = $ingredientPrice;
 					$arResult['composition'][$entityLabel][$ingredientName]['amount'] = is_array($ingredients) ? $ingredients['width'] : $ingredients;
+					$arResult['composition'][$entityLabel][$ingredientName]['height'] = is_array($ingredients) ? $ingredients['height'] : '';
 				}
 			}
 		}

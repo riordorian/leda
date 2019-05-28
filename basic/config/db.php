@@ -2,9 +2,9 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=127.0.0.1;port=8889;dbname=db_leda',
-    'username' => 'root',
-    'password' => 'root',
+    'dsn' => 'mysql:host=localhost;dbname=riordorian_lcrm',
+    'username' => 'riordorian_lcrm',
+    'password' => 'e*u&PG3Q',
     'charset' => 'utf8',
 
     // Schema cache options (for production environment)
